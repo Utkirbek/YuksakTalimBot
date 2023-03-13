@@ -1,0 +1,50 @@
+{
+  "dependencies": {
+    "@grammyjs/emoji": "^1.1.0",
+    "@grammyjs/fluent": "^1.0.3",
+    "@grammyjs/i18n": "^0.5.1",
+    "@grammyjs/menu": "^1.1.2",
+    "@grammyjs/parse-mode": "^1.4.0",
+    "@grammyjs/storage-prisma": "^2.0.0",
+    "@moebius/fluent": "^1.1.0",
+    "@prisma/client": "^4.1.1",
+    "@types/node-fetch": "^2.6.1",
+    "axios": "^0.27.2",
+    "dotenv": "^16.0.2",
+    "grammy": "^1.9.2",
+    "mongoose": "^7.0.1",
+    "node-fetch": "^3.2.4",
+    "rimraf": "^3.0.2",
+    "uri-js": "^4.4.1"
+  },
+  "scripts": {
+    "dev": "nodemon",
+    "start": "node ./dist/app.js",
+    "build": "rimraf ./build && tsc"
+  },
+  "engines": {
+    "node": "17.0",
+    "npm": "8.1"
+  },
+  "name": "deliresto_back",
+  "version": "1.0.0",
+  "main": "index.js",
+  "repository": {
+    "type": "git",
+    "url": ""
+  },
+  "author": "jakhongir abdukhamidov",
+  "license": "ISC",
+  "bugs": {},
+  "homepage": "",
+  "description": "",
+  "devDependencies": {
+    "@types/dotenv": "^8.2.0",
+    "@types/node": "^17.0.33",
+    "nodemon": "^2.0.15",
+    "ts-node": "^10.7.0",
+    "ts-node-dev": "^1.1.8",
+    "tsconfig-paths": "^4.0.0",
+    "typescript": "^4.7.4"
+  }
+}
