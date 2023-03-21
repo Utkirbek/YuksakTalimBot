@@ -25,9 +25,10 @@ bot.command("help", onCommandHelp);
 bot.callbackQuery("aloqa", async (ctx) => {
   await ctx.reply(
     `ADMINISTRATSIYA bilan bog'lanish uchun quyidagi telefon raqamlarga murojaat qiling:
-+998991234567
-+998901234567
-+998991234567
++998953085050
+JURNALISTLAR AKEDEMIYASI bilan bog'lanish uchun quyidagi telefon raqamlarga murojaat qiling:
++998331262626
++998338414141
     `)
 });
 
