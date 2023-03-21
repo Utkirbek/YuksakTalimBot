@@ -88,6 +88,17 @@ SHAXSIY TELEFON RAQAMINGIZ: +998991234567
   ,{reply_markup: { force_reply: true }})
   
 })
+bot.command("get", async (ctx) => {
+  const students = await Student.find();
+  if(ctx.from?.id === 5978419551){
+    await ctx.reply(JSON.stringify(students));
+  }else{
+    await ctx.reply(`Siz bu buyruqni bajarish huquqiga ega emassiz`)
+  }
+
+  
+  
+});
 
 
 
@@ -106,6 +117,8 @@ bot.on("message", async (ctx) => {
 "YUKSAK TA'LIM" O'QUV MARKAZI - KELAJAKNI BIZ BILAN QURING!`
   );
 })
+
+
 
 
 
