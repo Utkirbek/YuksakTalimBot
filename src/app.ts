@@ -1,20 +1,26 @@
 
-import { Bot, CallbackQueryContext, Context, InlineKeyboard } from "grammy";
+import { Bot, CallbackQueryContext, Context, InlineKeyboard, session } from "grammy";
 import { onCommandInfo } from "./handlers/commands/onCommandInfo";
-
+import {
+  type Conversation,
+  type ConversationFlavor,
+  conversations,
+  createConversation,
+} from "@grammyjs/conversations";
 import { onCommandHelp } from "./handlers/commands/onCommandHelp";
 import axios from "axios";
 import * as dotenv from "dotenv";
 import { Student } from "./Student";
 dotenv.config();
 
-export type MyAppContext = Context 
+export type MyAppContext = Context & ConversationFlavor
+type MyConversation = Conversation<MyAppContext>;
     
 import { connectDB } from "./db";
 export  const bot = new Bot<MyAppContext>(`${process.env.BOT_TOKEN}`);
 
 const inlineKeyboard = new InlineKeyboard()
-  .text("ADMINISTRATSIYA 📞", "aloqa")
+  .text("ADMINISTRATSIYA", "aloqa")
   .text("RO'YXATDAN O'TISH", "register");
  
 
@@ -32,19 +38,52 @@ JURNALISTLAR AKEDEMIYASI bilan bog'lanish uchun quyidagi telefon raqamlarga muro
     `)
 });
 
-bot.callbackQuery("register", async (ctx) => {
-  await ctx.reply(
-    `RO'YXATDAN O'TISH UCHUN MA'LUMOTLARINGIZNI QUYIDAGI KO'RINISHDA YUBORING:
 
-ISM FAMILIYA: Jahongir Usmanov
-YOSH: 20 yosh
-YASHASH MANZILI: Davlatobod tumani, 38-uy 42-xonadon
-OTA-ONANGIZ TELEFON RAQAMI: +998991234567
-SHAXSIY TELEFON RAQAMINGIZ: +998991234567
-`
-  ,{reply_markup: { force_reply: true }})
+async function greeting(conversation:MyConversation, ctx:MyAppContext) {
+ 
   
-});
+  const questions= ['ISM FAMILIYA:','YOSH:','YASHASH MANZILI:','OTA-ONANGIZ TELEFON RAQAMI:','SHAXSIY TELEFON RAQAMINGIZ:']
+  const movies: string[] = [];
+  for (let i = 0; i < questions.length; i++) {
+    await ctx.reply(`${questions[i]}`);
+    const titleCtx = await conversation.waitFor(":text");
+    movies.push(titleCtx.msg.text);
+  }
+  const student = new Student({
+    chatid: ctx.from?.id,
+    name: movies[0],
+    age: movies[1],
+    address: movies[2],
+    parentPhone: movies[3],
+    phone: movies[4],
+  });
+  await student.save();
+  console.log(student);
+  
+  await ctx.reply(`Sizning ma'lumotingiz "YUKSAK TA'LIM" o'quv markazining rasmiy bot ARXIVIGA saqlandi. 
+
+48 soat oralig'ida "YUKSAK TA'LIM" o'quv markazi ADMINISTRATSIYASI siz bilan bog'lanadi.
+
+"YUKSAK TA'LIM" O'QUV MARKAZI - KELAJAKNI BIZ BILAN QURING!`);
+
+}
+
+// Install the session plugin.
+bot.use(session({
+  initial() {
+    // return empty object for now
+    return {};
+  },
+}));
+
+// Install the conversations plugin.
+bot.use(conversations());
+bot.use(createConversation(greeting));
+bot.command("register", async (ctx) => {
+  await ctx.conversation.enter("greeting");
+})
+
+
 
 // Send a keyboard along with a message.
 bot.command("start", async (ctx) => {
@@ -102,21 +141,7 @@ bot.command("get", async (ctx) => {
 
 
 
-bot.on("message", async (ctx) => {
-  const newStudent = await new Student({
-    name: ctx.message?.text,
-  });
 
-  await newStudent.save();
-
-  await ctx.reply(
-    `Sizning ma'lumotingiz "YUKSAK TA'LIM" o'quv markazining rasmiy bot ARXIVIGA saqlandi. 
-
-48 soat oralig'ida "YUKSAK TA'LIM" o'quv markazi ADMINISTRATSIYASI siz bilan bog'lanadi.
-
-"YUKSAK TA'LIM" O'QUV MARKAZI - KELAJAKNI BIZ BILAN QURING!`
-  );
-})
 
 
 

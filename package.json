@@ -1,5 +1,6 @@
 {
   "dependencies": {
+    "@grammyjs/conversations": "^1.1.1",
     "@grammyjs/emoji": "^1.1.0",
     "@grammyjs/fluent": "^1.0.3",
     "@grammyjs/i18n": "^0.5.1",

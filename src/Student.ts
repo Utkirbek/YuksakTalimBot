@@ -6,6 +6,26 @@ const studentSchema = new mongoose.Schema(
         type: String,
         required: true,
     },
+    chatid:{
+      type: String,
+      required: true,
+    } ,
+    age: {
+        type: String,
+        required: true,
+    },  
+    address: {
+        type: String,
+        required: true,
+    },
+    parentPhone: {
+      type: String,
+      required: false,
+    },
+    phone: {
+      type: String,
+      required: false,
+    },
   },
   {
     timestamps: true,
