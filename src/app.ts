@@ -79,9 +79,7 @@ bot.use(session({
 // Install the conversations plugin.
 bot.use(conversations());
 bot.use(createConversation(greeting));
-bot.command("register", async (ctx) => {
-  await ctx.conversation.enter("greeting");
-})
+
 
 
 
@@ -104,29 +102,27 @@ Siz "YUKSAK TA'LIM" o'quv markazining rasmiy BOTIdan foydalanmoqdasiz.
     )
 });
 
-bot.command('aloqa',async (ctx) => {
-  await ctx.reply(
-    `ADMINISTRATSIYA bilan bog'lanish uchun quyidagi telefon raqamlarga murojaat qiling:
-+998991234567
-+998901234567
-+998991234567
-    `)
-});
 
 
-bot.command("register",async (ctx) => {
+
+bot.callbackQuery("register", async (ctx) => {
   await ctx.reply(
     `RO'YXATDAN O'TISH UCHUN MA'LUMOTLARINGIZNI QUYIDAGI KO'RINISHDA YUBORING:
-
 ISM FAMILIYA: Jahongir Usmanov
 YOSH: 20 yosh
 YASHASH MANZILI: Davlatobod tumani, 38-uy 42-xonadon
 OTA-ONANGIZ TELEFON RAQAMI: +998991234567
 SHAXSIY TELEFON RAQAMINGIZ: +998991234567
-`
-  ,{reply_markup: { force_reply: true }})
-  
-})
+`)
+  await ctx.conversation.enter("greeting");
+});
+
+bot.command("register", async (ctx) => {
+  await ctx.conversation.enter("greeting");
+});
+
+
+
 bot.command("get", async (ctx) => {
   const students = await Student.find();
   if(ctx.from?.id === 5978419551){
