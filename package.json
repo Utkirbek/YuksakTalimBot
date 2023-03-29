@@ -16,7 +16,8 @@
     "mongoose": "^7.0.1",
     "node-fetch": "^3.2.4",
     "rimraf": "^3.0.2",
-    "uri-js": "^4.4.1"
+    "uri-js": "^4.4.1",
+    "write-excel-file": "^1.4.24"
   },
   "scripts": {
     "dev": "nodemon",

@@ -12,6 +12,7 @@ import axios from "axios";
 import * as dotenv from "dotenv";
 import { Student } from "./Student";
 dotenv.config();
+import writeXlsxFile from 'write-excel-file/node';
 
 export type MyAppContext = Context & ConversationFlavor
 type MyConversation = Conversation<MyAppContext>;
@@ -125,14 +126,73 @@ bot.command("register", async (ctx) => {
 
 bot.command("get", async (ctx) => {
   const students = await Student.find();
+  const data:any = [
+    [
+      {
+        value: 'Chatid',
+        fontWeight: 'bold',
+      },
+      {
+        value: 'Name',
+        fontWeight: 'bold',
+      },
+      {
+        value: 'Age',
+        fontWeight: 'bold',
+      },
+      {
+        value: 'Address',
+        fontWeight: 'bold',
+      },
+      {
+        value: 'Parent Phone',
+        fontWeight: 'bold',
+      },
+      {
+        value: 'Phone',
+        fontWeight: 'bold',
+      },
+    ],
+  ];
+
+  for (let i = 0; i < students.length; i++) {
+    const student = students[i];
+    const row = [
+      {
+        value: student.chatid,
+      },
+      {
+        value: student.name,
+      },
+      {
+        value: student.age, 
+      },
+      {
+        value: student.address,
+      },
+      {
+        value: student.parentPhone,
+      },
+      {
+        value: student.phone,
+      },
+    ];
+
+    data.push(row);
+  }
+  const response = await writeXlsxFile(data, {
+    filePath: "students.xlsx",
+  });
+  
+
+
+
+
   if(ctx.from?.id === 5978419551){
     await ctx.reply(JSON.stringify(students));
   }else{
     await ctx.reply(`Siz bu buyruqni bajarish huquqiga ega emassiz`)
   }
-
-  
-  
 });
 
 
